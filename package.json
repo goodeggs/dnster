@@ -9,6 +9,7 @@
     "chai": "*",
     "mocha": "*",
     "sinon": "*",
+    "sinon-chai": "*",
     "tmp": "*"
   },
   "bin": {

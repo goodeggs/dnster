@@ -1,7 +1,7 @@
+{expect} = chai = require 'chai'
+chai.use require('sinon-chai')
 realSinon = require 'sinon'
-{expect} = require 'chai'
 
-GLOBAL.sinon = null
 GLOBAL.expect = expect
 
 beforeEach ->
@@ -9,5 +9,4 @@ beforeEach ->
   
 afterEach ->
   GLOBAL.sinon.restore()
-
 

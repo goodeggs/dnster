@@ -2,9 +2,9 @@ require './support/test_helper'
 
 fs = require 'fs'
 tmp = require 'tmp'
-config = require '../lib/config'
+configFile = require '../lib/config_file'
 
-describe 'config', ->
+describe 'configFile', ->
   {path} = {}
 
   describe 'no config file', ->
@@ -15,15 +15,15 @@ describe 'config', ->
         cb(err)
 
     describe 'read', ->
-      {obj} = {}
+      {config} = {}
 
       beforeEach (cb) ->
-        config.read path, (err, tmpObj) ->
-          obj = tmpObj
+        configFile.read path, (err, tmpConfig) ->
+          config = tmpConfig
           cb(err)
 
       it 'returns defaults', ->
-        expect(obj).to.eql {ports: {}, ssl: false}
+        expect(config).to.eql {ports: {}, ssl: false}
 
       it 'does not create the file', ->
         expect(fs.existsSync(path)).to.be.false
@@ -31,14 +31,14 @@ describe 'config', ->
     describe 'write', ->
 
       beforeEach (cb) ->
-        config.write path, {ports: {}, ssl: true}, cb
+        configFile.write path, {ports: {}, ssl: true}, cb
 
       it 'creates file', ->
         expect(fs.existsSync(path)).to.be.true
 
       it 'saves JSON', ->
-        newObj = JSON.parse(fs.readFileSync(path))
-        expect(newObj).to.eql {ports: {}, ssl: true}
+        newConfig = JSON.parse(fs.readFileSync(path))
+        expect(newConfig).to.eql {ports: {}, ssl: true}
 
   describe 'existing config file', ->
 
@@ -52,50 +52,50 @@ describe 'config', ->
         cb()
 
     describe 'read', ->
-      {obj} = {}
+      {config} = {}
 
       beforeEach (cb) ->
-        config.read path, (err, tmpObj) ->
-          obj = tmpObj
+        configFile.read path, (err, tmpConfig) ->
+          config = tmpConfig
           cb(err)
 
       it 'returns json', ->
-        expect(obj).to.eql fixture
+        expect(config).to.eql fixture
 
     describe 'write', ->
 
       beforeEach (cb) ->
-        config.write path, {ports: {}, ssl: true}, cb
+        configFile.write path, {ports: {}, ssl: true}, cb
 
       it 'updates file', ->
-        newObj = JSON.parse(fs.readFileSync(path))
-        expect(newObj).to.eql {ports: {}, ssl: true}
+        newConfig = JSON.parse(fs.readFileSync(path))
+        expect(newConfig).to.eql {ports: {}, ssl: true}
 
     describe 'addSite', ->
 
       beforeEach (cb) ->
-        config.addSite path, 'example', 4000, cb
+        configFile.addSite path, 'example', 4000, cb
 
       it 'updates file', ->
-        newObj = JSON.parse(fs.readFileSync(path))
-        expect(newObj.ports[3000]?).to.be.true
-        expect(newObj.ports[4000].name).to.equal 'example'
+        newConfig = JSON.parse(fs.readFileSync(path))
+        expect(newConfig.ports[3000]?).to.be.true
+        expect(newConfig.ports[4000].name).to.equal 'example'
 
     describe 'addSiteAlias', ->
 
       beforeEach (cb) ->
-        config.addSiteAlias path, 'goodeggs', 'other', cb
+        configFile.addSiteAlias path, 'goodeggs', 'other', cb
 
       it 'updates file', ->
-        newObj = JSON.parse(fs.readFileSync(path))
-        expect(newObj.ports[3000].aliases).to.eql {www: true, other: true}
+        newConfig = JSON.parse(fs.readFileSync(path))
+        expect(newConfig.ports[3000].aliases).to.eql {www: true, other: true}
 
     describe 'setSSL', ->
 
       beforeEach (cb) ->
-        config.setSSL path, true, cb
+        configFile.setSSL path, true, cb
 
       it 'updates file', ->
-        newObj = JSON.parse(fs.readFileSync(path))
-        expect(newObj.ssl).to.be.true
+        newConfig = JSON.parse(fs.readFileSync(path))
+        expect(newConfig.ssl).to.be.true
 
