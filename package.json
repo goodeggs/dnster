@@ -1,0 +1,21 @@
+{
+  "name": "dnster",
+  "version": "0.0.1",
+  "dependencies": {
+    "optimist": "*"
+  },
+  "devDependencies": {
+    "coffee-script": "*",
+    "chai": "*",
+    "mocha": "*",
+    "sinon": "*",
+    "tmp": "*"
+  },
+  "bin": {
+    "dnster": "./bin/dnster.js"
+  },
+  "scripts": {
+    "pretest": "./node_modules/.bin/coffee -c -o lib src",
+    "test": "./node_modules/.bin/mocha"
+  }
+}
