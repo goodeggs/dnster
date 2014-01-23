@@ -1,3 +1,4 @@
+fs = require 'fs'
 os = require 'os'
 configFile = require './config_file'
 httpProxy = require './http_proxy'
@@ -23,12 +24,22 @@ buildRoutes = (config) ->
 
   return routes
 
+watcher = null
 
 module.exports =
 
-  watch: (path) ->
-    fs.watch path, ->
-      configFile.read path, (err, config) =>
+  run: (configPath, watch) ->
+    configFile.read configPath, (err, config) =>
+      throw err if err?
+      @reload config
+      @watch configPath if watch
+
+  stop: ->
+    watcher?.close()
+
+  watch: (configPath) ->
+    watcher = fs.watch configPath, ->
+      configFile.read configPath, (err, config) =>
         return console.error err if err?
         @reload config
 

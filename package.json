@@ -2,6 +2,7 @@
   "name": "dnster",
   "version": "0.0.1",
   "dependencies": {
+    "http-proxy": "*",
     "optimist": "*"
   },
   "devDependencies": {
