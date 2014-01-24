@@ -28,17 +28,15 @@ watcher = null
 
 module.exports =
 
-  run: (configPath, watch) ->
-    configFile.read configPath, (err, config) =>
-      throw err if err?
-      @reload config
-      @watch configPath if watch
+  run: (config, watch) ->
+    @reload config
+    @watch config.path if watch
 
   stop: ->
     watcher?.close()
 
   watch: (configPath) ->
-    watcher = fs.watch configPath, ->
+    watcher = fs.watch configPath, =>
       configFile.read configPath, (err, config) =>
         return console.error err if err?
         @reload config
@@ -47,7 +45,7 @@ module.exports =
     routes = buildRoutes(config)
     httpProxy.reload routes
     if config.ssl
-      httpsProxy.reload routes
+      httpsProxy.reload config.files, routes
     else
       httpsProxy.stop()
 
