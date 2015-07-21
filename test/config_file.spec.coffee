@@ -27,7 +27,7 @@ describe 'configFile', ->
         expect(config.ports).to.eql {}
         expect(config.ssl).to.be.false
         expect(config.path).to.equal path.join(dir, 'config.json')
-        expect(config.files).to.be.defined
+        expect(config.files).to.exist
 
       it 'does not create the file', ->
         expect(fs.existsSync(path.join(dir, 'config.json'))).to.be.false
@@ -66,7 +66,7 @@ describe 'configFile', ->
       it 'returns json', ->
         expect(config.ports).to.eql fixture.ports
         expect(config.path).to.equal path.join(dir, 'config.json')
-        expect(config.files).to.be.defined
+        expect(config.files).to.exist
 
     describe 'write', ->
 
