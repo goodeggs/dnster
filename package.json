@@ -18,7 +18,9 @@
     "dnster": "./bin/dnster.js"
   },
   "scripts": {
-    "pretest": "./node_modules/.bin/coffee -c -o lib src",
+    "compile": "./node_modules/.bin/coffee -c -o lib src",
+    "prepublish": "npm run compile",
+    "pretest": "npm run compile",
     "test": "./node_modules/.bin/mocha"
   }
 }
